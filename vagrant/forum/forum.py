@@ -9,6 +9,7 @@ import forumdb
 import cgi
 from wsgiref.simple_server import make_server
 from wsgiref import util
+import bleach
 
 # HTML template for the forum page
 HTML_WRAP = '''\
@@ -75,7 +76,7 @@ def Post(env, resp):
         content = content.strip()
         if content:
             # Save it in the database
-            forumdb.AddPost(content)
+            forumdb.AddPost(bleach.clean(content))
     # 302 redirect back to the main page
     headers = [('Location', '/'),
                ('Content-type', 'text/plain')]
